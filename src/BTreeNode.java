@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.IntStream;
 
 /**
  * Author: Zixiao Guo
@@ -12,11 +14,11 @@ public class BTreeNode {
 
     private static final int Order = 3;
     //TODO: change arraylist to array
-    private ArrayList<Student> students;       // entry of students in one node
+    private Student[] students;       // entry of students in one node
     private BTreeNode parentNode;
-    private ArrayList<BTreeNode> childrenNode;
+    private BTreeNode[] childrenNode;
 
-    public ArrayList<Student> getStudents() {
+    public Student[] getStudents() {
         return students;
     }
 
@@ -24,7 +26,7 @@ public class BTreeNode {
         return parentNode;
     }
 
-    public ArrayList<BTreeNode> getChildrenNode() {
+    public BTreeNode[] getChildrenNode() {
         return childrenNode;
     }
 
@@ -32,8 +34,8 @@ public class BTreeNode {
      * Creates new node of b-tree and instantiate its student entries and child nodes
      */
     public BTreeNode() {
-        this.students = new ArrayList<Student>();
-        this.childrenNode = new ArrayList<BTreeNode>();
+        this.students = new Student[3];
+        this.childrenNode = new BTreeNode[4]; //TODO: probably change to 4 since we need to accept 1 extra student to spilit node
     }
 
     /**
@@ -54,9 +56,9 @@ public class BTreeNode {
      */
     public BTreeNode insertStudent(Student student) {
         if(isEmpty()) {
-            students.add(student);
-            childrenNode.add(new BTreeNode(this));
-            childrenNode.add(new BTreeNode(this));
+            students[0] = student;
+            childrenNode[0] = new BTreeNode(this);
+            childrenNode[1] = new BTreeNode(this);
             return this;
         }
         BTreeNode p = getRoot().search(student);
@@ -73,41 +75,50 @@ public class BTreeNode {
      */
     private void insertNode(BTreeNode node, Student student, BTreeNode extraChildNode) {
         int valueIndex = 0;
-        while(valueIndex < node.students.size() && StudentComparator.compareStudentNames(node, valueIndex, student)  < 0) {
+        // TODO: error prone here
+        while(valueIndex < StudentComparator.getLength(node.students) && StudentComparator.compareStudentNames(node, valueIndex, student)  < 0) {
             valueIndex++;
         }
-        //TODO: make a function to compare student name for code abstraction
-        node.students.add(valueIndex, student);
+
+        node.students = StudentComparator.addStudentElement(node.students, student, valueIndex);
 
         //insert additional child node to fit the increase
         extraChildNode.parentNode = node;
-        node.childrenNode.add(valueIndex+1, extraChildNode);
+        node.childrenNode = StudentComparator.addElement(node.childrenNode, extraChildNode, valueIndex+1);
 
         // if size is greater or equal to order, need to generate new nodes
-        if(node.students.size() > Order -1) {
+        if(StudentComparator.getLength(node.students) > Order -1) {
             /*
              since this is an order 3 b-tree, when the new node need to be generated,
              the middle student entry get promoted, which index equals to M/2 = 1
              */
             int promoteIndex = Order /2;
-            Student studentPromoted = node.students.get(promoteIndex);
+            Student studentPromoted = node.students[promoteIndex];
+            //TODO: may need to instantiate new students and nodes
 
             // instantiate a new node and moves the entries and child nodes into it
             BTreeNode rightNode = new BTreeNode();
-            rightNode.students = new ArrayList(node.students.subList(promoteIndex+1, Order));
-            rightNode.childrenNode = new ArrayList(node.childrenNode.subList(promoteIndex+1, Order +1));
+            // TODO: change rightNode.students
+            rightNode.students = IntStream.range(promoteIndex+1, Order+1).mapToObj(i -> node.students[i]).toArray(Student[]::new); //attach elements to new node
+            //rightNode.students = new ArrayList(node.students.subList(promoteIndex+1, Order));
+            rightNode.childrenNode = IntStream.range(promoteIndex+1, Order+2).mapToObj(i -> node.childrenNode[i]).toArray(BTreeNode[]::new);
+            //rightNode.childrenNode = new ArrayList(node.childrenNode.subList(promoteIndex+1, Order +1));
             for(BTreeNode rChild : rightNode.childrenNode) {
-                rChild.parentNode = rightNode;
+                if(rChild!=null) {
+                    rChild.parentNode = rightNode;
+                }
             }
 
             // remove previously assigned node, if the node is root node, generate new node as root
-            node.students = new ArrayList(node.students.subList(0, promoteIndex));
-            node.childrenNode = new ArrayList(node.childrenNode.subList(0, promoteIndex+1));
+            node.students = IntStream.range(0, promoteIndex).mapToObj(i -> node.students[i]).toArray(Student[]::new);
+            //node.students = new ArrayList(node.students.subList(0, promoteIndex));
+            node.childrenNode = IntStream.range(0, promoteIndex+1).mapToObj(i -> node.childrenNode[i]).toArray(BTreeNode[]::new);
+            //node.childrenNode = new ArrayList(node.childrenNode.subList(0, promoteIndex+1));
             if(node.parentNode == null) {
                 node.parentNode = new BTreeNode();
-                node.parentNode.students.add(studentPromoted);
-                node.parentNode.childrenNode.add(node);
-                node.parentNode.childrenNode.add(rightNode);
+                node.parentNode.students[0] = studentPromoted;
+                node.parentNode.childrenNode[0] = node;
+                node.parentNode.childrenNode[1] = rightNode;
                 rightNode.parentNode = node.parentNode;
                 return;
             }
@@ -127,13 +138,13 @@ public class BTreeNode {
             return this;
         }
         int valueIndex = 0;
-        while(valueIndex < students.size() && StudentComparator.compareStudentNames(this, valueIndex, target) <= 0) {
+        while(valueIndex < StudentComparator.getLength(students) && StudentComparator.compareStudentNames(this, valueIndex, target) <= 0) {
             if(StudentComparator.compareStudentNames(this, valueIndex, target) == 0) {
                 return this;
             }
             valueIndex++;
         }
-        return childrenNode.get(valueIndex).search(target);
+        return childrenNode[valueIndex].search(target);
     }
 
     /**
@@ -154,7 +165,7 @@ public class BTreeNode {
      */
     //TODO: maybe change to private later
     public boolean isEmpty() {
-        if(students == null || students.size() == 0) {
+        if(students == null || StudentComparator.getLength(students) == 0) {
             return true;
         }
         return false;
@@ -171,6 +182,7 @@ public class BTreeNode {
     /**
      * Print the tree structure
      */
+
     public void print() {
         printNode(this, 0);
     }
@@ -184,11 +196,14 @@ public class BTreeNode {
         if(depth > 0) {
             sb.append("--  ");
         }
-        sb.append(node.students);
-        System.out.println(sb.toString());  //TODO: need to change this line
-        for(BTreeNode child : node.childrenNode) {
-            printNode(child, depth+1);
+        if(node != null) {
+            sb.append(Arrays.asList(node.students));
+            System.out.println(sb.toString());  //TODO: need to change this line
+            for(BTreeNode child : node.childrenNode) {
+                printNode(child, depth+1);
+            }
         }
+
     }
 
 

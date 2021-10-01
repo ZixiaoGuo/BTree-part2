@@ -51,7 +51,7 @@ public class BTreeApplication {
         node = node.insertStudent(student14);
 
         node.print();
-
+/*
         ArrayList<Student> studentOnProbation = new ArrayList<Student>();
         ArrayList<Student> studentWithGoodGPA = new ArrayList<Student>();
         StudentSearcher search = new StudentSearcher();
@@ -65,6 +65,8 @@ public class BTreeApplication {
         Student studentK = search.getSpecificStudents(i, node);
         System.out.println("test----------------This is the " + i + " th element in the tree: " + studentK);
 
+
+ */
 
     }
 }
