@@ -6,12 +6,12 @@ import java.util.Comparator;
 
 public class StudentSearcher {
     public ArrayList<Student> getHighGPAStudents(BTreeNode node, ArrayList<Student> students) {
-        if (!node.isEmpty()) {
+        if (node!= null && !node.isEmpty()) {
             for (BTreeNode childNode : node.getChildrenNode()) {
                 getHighGPAStudents(childNode, students);
             }
             for (Student student : node.getStudents()) {
-                if (student.getGpa() == 4.0f) {
+                if (student!= null && student.getGpa() == 4.0f) {
                     students.add(student);
                 }
             }
@@ -24,12 +24,12 @@ public class StudentSearcher {
         return students;
     }
     public ArrayList<Student> getProbationStudents(BTreeNode node, ArrayList<Student> studentsOnProbation) {
-        if (!node.isEmpty()) {
+        if (node!= null && !node.isEmpty()) {
             for (BTreeNode childNode : node.getChildrenNode()) {
                 getProbationStudents(childNode,studentsOnProbation);
             }
             for (Student student : node.getStudents()) {
-                if (student.getGpa() < 2.85f) {
+                if (student!= null && student.getGpa() < 2.85f) {
                     studentsOnProbation.add(student);
                 }
             }
@@ -47,6 +47,7 @@ public class StudentSearcher {
      * @return  student found
      * @throws ExecutionControl.NotImplementedException
      */
+    //TODO: nullptr exception here, change later
     public Student getSpecificStudents(int index, BTreeNode node) throws ExecutionControl.NotImplementedException {
         ArrayList<Student> students = new ArrayList<Student>();
         getAllStudents(node, students);
@@ -65,7 +66,7 @@ public class StudentSearcher {
      * @return
      */
     private ArrayList<Student> getAllStudents(BTreeNode node, ArrayList<Student> students) {
-        if (!node.isEmpty()) {
+        if (node!= null && !node.isEmpty()) {
             for (BTreeNode childNode : node.getChildrenNode()) {
                 getAllStudents(childNode, students);
             }

@@ -21,7 +21,9 @@ public final class StudentComparator {
         //return node.getStudents().get(indexOfStudentInNode).getName().compareTo(student.getName());
         return node.getStudents()[indexOfStudentInNode].getName().compareTo(student.getName());
     }
-    public static <T> int getLength(T[] arr){
+
+    //Function that returns the length of array without counting null elements
+    public static <T> int getNotNullLength(T[] arr){
         int count = 0;
         for(T element : arr)
             if (element != null)

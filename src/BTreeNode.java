@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
@@ -76,7 +75,7 @@ public class BTreeNode {
     private void insertNode(BTreeNode node, Student student, BTreeNode extraChildNode) {
         int valueIndex = 0;
         // TODO: error prone here
-        while(valueIndex < StudentComparator.getLength(node.students) && StudentComparator.compareStudentNames(node, valueIndex, student)  < 0) {
+        while(valueIndex < StudentComparator.getNotNullLength(node.students) && StudentComparator.compareStudentNames(node, valueIndex, student)  < 0) {
             valueIndex++;
         }
 
@@ -87,7 +86,7 @@ public class BTreeNode {
         node.childrenNode = StudentComparator.addElement(node.childrenNode, extraChildNode, valueIndex+1);
 
         // if size is greater or equal to order, need to generate new nodes
-        if(StudentComparator.getLength(node.students) > Order -1) {
+        if(StudentComparator.getNotNullLength(node.students) > Order -1) {
             /*
              since this is an order 3 b-tree, when the new node need to be generated,
              the middle student entry get promoted, which index equals to M/2 = 1
@@ -138,7 +137,7 @@ public class BTreeNode {
             return this;
         }
         int valueIndex = 0;
-        while(valueIndex < StudentComparator.getLength(students) && StudentComparator.compareStudentNames(this, valueIndex, target) <= 0) {
+        while(valueIndex < StudentComparator.getNotNullLength(students) && StudentComparator.compareStudentNames(this, valueIndex, target) <= 0) {
             if(StudentComparator.compareStudentNames(this, valueIndex, target) == 0) {
                 return this;
             }
@@ -165,7 +164,7 @@ public class BTreeNode {
      */
     //TODO: maybe change to private later
     public boolean isEmpty() {
-        if(students == null || StudentComparator.getLength(students) == 0) {
+        if(students == null || StudentComparator.getNotNullLength(students) == 0) {
             return true;
         }
         return false;
@@ -178,34 +177,5 @@ public class BTreeNode {
     private boolean isRoot() {
         return parentNode == null;
     }
-
-    /**
-     * Print the tree structure
-     */
-
-    public void print() {
-        printNode(this, 0);
-    }
-
-    //TODO: This method need to be deprecated
-    private void printNode(BTreeNode node, int depth) {
-        StringBuilder sb = new StringBuilder();
-        for(int i = 1; i < depth; i++) {
-            sb.append("     ");
-        }
-        if(depth > 0) {
-            sb.append("--  ");
-        }
-        if(node != null) {
-            sb.append(Arrays.asList(node.students));
-            System.out.println(sb.toString());  //TODO: need to change this line
-            for(BTreeNode child : node.childrenNode) {
-                printNode(child, depth+1);
-            }
-        }
-
-    }
-
-
 
 }

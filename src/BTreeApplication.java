@@ -50,8 +50,9 @@ public class BTreeApplication {
         node = node.insertStudent(student13);
         node = node.insertStudent(student14);
 
-        node.print();
-/*
+        BTreePrinter printer = new BTreePrinter();
+        printer.print(node);
+
         ArrayList<Student> studentOnProbation = new ArrayList<Student>();
         ArrayList<Student> studentWithGoodGPA = new ArrayList<Student>();
         StudentSearcher search = new StudentSearcher();
@@ -61,12 +62,12 @@ public class BTreeApplication {
         studentWithGoodGPA.clear();
         System.out.println("test-----------Students on probation: " + studentOnProbation);
         studentOnProbation.clear();
-        int i = 4;
-        Student studentK = search.getSpecificStudents(i, node);
-        System.out.println("test----------------This is the " + i + " th element in the tree: " + studentK);
+        //int i = 4;
+        //Student studentK = search.getSpecificStudents(i, node);
+        //System.out.println("test----------------This is the " + i + " th element in the tree: " + studentK);
 
 
- */
+
 
     }
 }
