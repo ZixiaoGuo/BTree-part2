@@ -9,10 +9,9 @@ import java.util.stream.IntStream;
  * 9/7/2021
  * This is the class to implement the B-tree
  */
-public class BTreeNode {
+public class BTreeNode<E> {
 
     private static final int Order = 3;
-    //TODO: change arraylist to array
     private Student[] students;       // entry of students in one node
     private BTreeNode parentNode;
     private BTreeNode[] childrenNode;
@@ -34,7 +33,7 @@ public class BTreeNode {
      */
     public BTreeNode() {
         this.students = new Student[3];
-        this.childrenNode = new BTreeNode[4]; //TODO: probably change to 4 since we need to accept 1 extra student to spilit node
+        this.childrenNode = new BTreeNode[4];
     }
 
     /**
@@ -93,15 +92,11 @@ public class BTreeNode {
              */
             int promoteIndex = Order /2;
             Student studentPromoted = node.students[promoteIndex];
-            //TODO: may need to instantiate new students and nodes
 
             // instantiate a new node and moves the entries and child nodes into it
             BTreeNode rightNode = new BTreeNode();
-            // TODO: change rightNode.students
             rightNode.students = IntStream.range(promoteIndex+1, Order+1).mapToObj(i -> node.students[i]).toArray(Student[]::new); //attach elements to new node
-            //rightNode.students = new ArrayList(node.students.subList(promoteIndex+1, Order));
             rightNode.childrenNode = IntStream.range(promoteIndex+1, Order+2).mapToObj(i -> node.childrenNode[i]).toArray(BTreeNode[]::new);
-            //rightNode.childrenNode = new ArrayList(node.childrenNode.subList(promoteIndex+1, Order +1));
             for(BTreeNode rChild : rightNode.childrenNode) {
                 if(rChild!=null) {
                     rChild.parentNode = rightNode;
@@ -110,9 +105,7 @@ public class BTreeNode {
 
             // remove previously assigned node, if the node is root node, generate new node as root
             node.students = IntStream.range(0, promoteIndex).mapToObj(i -> node.students[i]).toArray(Student[]::new);
-            //node.students = new ArrayList(node.students.subList(0, promoteIndex));
             node.childrenNode = IntStream.range(0, promoteIndex+1).mapToObj(i -> node.childrenNode[i]).toArray(BTreeNode[]::new);
-            //node.childrenNode = new ArrayList(node.childrenNode.subList(0, promoteIndex+1));
             if(node.parentNode == null) {
                 node.parentNode = new BTreeNode();
                 node.parentNode.students[0] = studentPromoted;
