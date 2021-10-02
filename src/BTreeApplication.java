@@ -38,6 +38,7 @@ public class BTreeApplication {
         node = node.insertStudent(student1);
         node = node.insertStudent(student2);
         node = node.insertStudent(student3);
+        System.out.println(node.size());
         node = node.insertStudent(student4);
         node = node.insertStudent(student5);
         node = node.insertStudent(student6);

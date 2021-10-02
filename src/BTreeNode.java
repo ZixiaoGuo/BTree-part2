@@ -29,14 +29,15 @@ public class BTreeNode<E> extends AbstractCollection<E> {
 
             @Override
             public E next() {
-                return (E) childrenNode[0];
+                //TODO:should return parent
+                return (E) parentNode;
             }
         };
     }
 
     @Override
     public int size() {
-        return 0;
+        return 100;
     }
 
     public Student[] getStudents() {
