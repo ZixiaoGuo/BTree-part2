@@ -1,20 +1,43 @@
-import java.util.Arrays;
+import java.util.AbstractCollection;
+import java.util.Iterator;
 import java.util.stream.IntStream;
 
 /**
  * Author: Zixiao Guo
  * RedId: 822029189
- * CS635 Assignment 1
+ * CS635 Assignment 2
  * Section 2
  * 9/7/2021
  * This is the class to implement the B-tree
  */
-public class BTreeNode<E> {
+public class BTreeNode<E> extends AbstractCollection<E> {
 
     private static final int Order = 3;
     private Student[] students;       // entry of students in one node
     private BTreeNode parentNode;
     private BTreeNode[] childrenNode;
+    private int size = 0;
+
+
+    @Override
+    public Iterator<E> iterator() {
+        return new Iterator<E>() {
+            @Override
+            public boolean hasNext() {
+                return childrenNode[0].isEmpty();
+            }
+
+            @Override
+            public E next() {
+                return (E) childrenNode[0];
+            }
+        };
+    }
+
+    @Override
+    public int size() {
+        return 0;
+    }
 
     public Student[] getStudents() {
         return students;
@@ -36,6 +59,7 @@ public class BTreeNode<E> {
         this.childrenNode = new BTreeNode[4];
     }
 
+
     /**
      * Constructs a new node and assign the parent pointer to the node passed in
      * @param parent pointer of parent node
@@ -52,6 +76,7 @@ public class BTreeNode<E> {
      * @param student student object to insert into
      * @return returns the root node of the b-tree
      */
+    //TODO: change the return type to boolean
     public BTreeNode insertStudent(Student student) {
         if(isEmpty()) {
             students[0] = student;
