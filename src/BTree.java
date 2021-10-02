@@ -19,6 +19,18 @@ public class BTree {
         return rootNode;
     }
 
+    /**
+     * Using adapter pattern to achieve compatibility for previous project's code
+     * New root node may be generated during insertion, hence need find new root
+     * @param student Student being inserted
+     * @return  insertion result
+     */
+    public Boolean insertStudent(Student student) {
+        rootNode.insertStudent(student);
+        rootNode = rootNode.getRoot();  //new root node may be generated during insertion
+        return true;
+    }
+
     public class BTreeNode {
 
         //private static final int ORDER = 3;
@@ -64,18 +76,18 @@ public class BTree {
          * @return returns the root node of the b-tree
          */
         //TODO: change the return type to boolean
-        public BTreeNode insertStudent(Student student) {
+        private Boolean insertStudent(Student student) {
             if(isEmpty()) {
                 students[0] = student;
                 childrenNode[0] = new BTreeNode(this);
                 childrenNode[1] = new BTreeNode(this);
                 size++;
-                return this;
+                return true;
             }
             BTreeNode p = getRoot().search(student);
             insertNode(p.parentNode, student, new BTreeNode());
             size++;
-            return getRoot();
+            return true;
         }
 
         /**

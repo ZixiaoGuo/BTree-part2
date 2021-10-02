@@ -35,25 +35,25 @@ public class BTreeApplication {
 
         BTree bTree = new BTree();
         BTree.BTreeNode node = bTree.getRootNode();
-        node = node.insertStudent(student1);
-        node = node.insertStudent(student2);
-        node = node.insertStudent(student3);
+        bTree.insertStudent(student1);
+        bTree.insertStudent(student2);
+        bTree.insertStudent(student3);
         System.out.println(bTree.getSize());    //debug line
-        node = node.insertStudent(student4);
-        node = node.insertStudent(student5);
-        node = node.insertStudent(student6);
-        node = node.insertStudent(student7);
-        node = node.insertStudent(student8);
-        node = node.insertStudent(student9);
-        node = node.insertStudent(student10);
-        node = node.insertStudent(student11);
-        node = node.insertStudent(student12);
-        node = node.insertStudent(student13);
-        node = node.insertStudent(student14);
+        bTree.insertStudent(student4);
+        bTree.insertStudent(student5);
+        bTree.insertStudent(student6);
+        bTree.insertStudent(student7);
+        bTree.insertStudent(student8);
+        bTree.insertStudent(student9);
+        bTree.insertStudent(student10);
+        bTree.insertStudent(student11);
+        bTree.insertStudent(student12);
+        bTree.insertStudent(student13);
+        bTree.insertStudent(student14);
         System.out.println(bTree.getSize());    //debug line
 
         BTreePrinter printer = new BTreePrinter();
-        printer.print(node);
+        printer.print(bTree.getRootNode());
 
         ArrayList<Student> studentOnProbation = new ArrayList<Student>();
         ArrayList<Student> studentWithGoodGPA = new ArrayList<Student>();
