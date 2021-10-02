@@ -33,12 +33,12 @@ public class BTreeApplication {
         Student student13 = new Student("m", 822017545, 3.01f);
         Student student14 = new Student("n", 822017653, 2.11f);
 
-
-        BTreeNode node = new BTreeNode();
+        BTree bTree = new BTree();
+        BTree.BTreeNode node = bTree.getRootNode();
         node = node.insertStudent(student1);
         node = node.insertStudent(student2);
         node = node.insertStudent(student3);
-        System.out.println(node.size());
+        System.out.println(bTree.getSize());    //debug line
         node = node.insertStudent(student4);
         node = node.insertStudent(student5);
         node = node.insertStudent(student6);
@@ -50,6 +50,7 @@ public class BTreeApplication {
         node = node.insertStudent(student12);
         node = node.insertStudent(student13);
         node = node.insertStudent(student14);
+        System.out.println(bTree.getSize());    //debug line
 
         BTreePrinter printer = new BTreePrinter();
         printer.print(node);

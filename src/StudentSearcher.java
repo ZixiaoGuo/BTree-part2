@@ -5,9 +5,9 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class StudentSearcher {
-    public ArrayList<Student> getHighGPAStudents(BTreeNode node, ArrayList<Student> students) {
+    public ArrayList<Student> getHighGPAStudents(BTree.BTreeNode node, ArrayList<Student> students) {
         if (node!= null && !node.isEmpty()) {
-            for (BTreeNode childNode : node.getChildrenNode()) {
+            for (BTree.BTreeNode childNode : node.getChildrenNode()) {
                 getHighGPAStudents(childNode, students);
             }
             for (Student student : node.getStudents()) {
@@ -23,9 +23,9 @@ public class StudentSearcher {
         Collections.reverse(students);
         return students;
     }
-    public ArrayList<Student> getProbationStudents(BTreeNode node, ArrayList<Student> studentsOnProbation) {
+    public ArrayList<Student> getProbationStudents(BTree.BTreeNode node, ArrayList<Student> studentsOnProbation) {
         if (node!= null && !node.isEmpty()) {
-            for (BTreeNode childNode : node.getChildrenNode()) {
+            for (BTree.BTreeNode childNode : node.getChildrenNode()) {
                 getProbationStudents(childNode,studentsOnProbation);
             }
             for (Student student : node.getStudents()) {
@@ -48,7 +48,7 @@ public class StudentSearcher {
      * @throws ExecutionControl.NotImplementedException
      */
     //TODO: nullptr exception here, change later
-    public Student getSpecificStudents(int index, BTreeNode node) throws ExecutionControl.NotImplementedException {
+    public Student getSpecificStudents(int index, BTree.BTreeNode node) throws ExecutionControl.NotImplementedException {
         ArrayList<Student> students = new ArrayList<Student>();
         getAllStudents(node, students);
         if (index > students.size()) {
@@ -65,9 +65,9 @@ public class StudentSearcher {
      * @param students  array of students to collect results
      * @return
      */
-    private ArrayList<Student> getAllStudents(BTreeNode node, ArrayList<Student> students) {
+    private ArrayList<Student> getAllStudents(BTree.BTreeNode node, ArrayList<Student> students) {
         if (node!= null && !node.isEmpty()) {
-            for (BTreeNode childNode : node.getChildrenNode()) {
+            for (BTree.BTreeNode childNode : node.getChildrenNode()) {
                 getAllStudents(childNode, students);
             }
             for (Student student : node.getStudents()) {

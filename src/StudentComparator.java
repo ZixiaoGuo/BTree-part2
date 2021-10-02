@@ -17,7 +17,8 @@ public final class StudentComparator {
      * @param student   another student object used to compare with the student in the node
      * @return  the result of comparison
      */
-    public static int compareStudentNames (BTreeNode node, int indexOfStudentInNode, Student student) {
+
+    public static int compareStudentNames (BTree.BTreeNode node, int indexOfStudentInNode, Student student) {
         //return node.getStudents().get(indexOfStudentInNode).getName().compareTo(student.getName());
         return node.getStudents()[indexOfStudentInNode].getName().compareTo(student.getName());
     }
@@ -59,12 +60,14 @@ public final class StudentComparator {
  */
         return arr;
     }
-    public static BTreeNode[] addElement(
-            BTreeNode[] arr, BTreeNode element,
+
+
+    public static BTree.BTreeNode[] addElement(
+            BTree.BTreeNode[] arr, BTree.BTreeNode element,
             int position)
     {
         // Converting array to ArrayList
-        List<BTreeNode> list = new ArrayList<>(
+        List<BTree.BTreeNode> list = new ArrayList<>(
                 Arrays.asList(arr));
 
         // Adding the element at position
@@ -73,7 +76,6 @@ public final class StudentComparator {
 
         // Converting the list back to array
         arr = list.toArray(arr);
-
 
         return arr;
     }
