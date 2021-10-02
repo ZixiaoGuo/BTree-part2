@@ -38,7 +38,7 @@ public class BTreeApplication {
         bTree.insertStudent(student1);
         bTree.insertStudent(student2);
         bTree.insertStudent(student3);
-        System.out.println(bTree.getSize());    //debug line
+        System.out.println(bTree.size());    //debug line
         bTree.insertStudent(student4);
         bTree.insertStudent(student5);
         bTree.insertStudent(student6);
@@ -50,7 +50,7 @@ public class BTreeApplication {
         bTree.insertStudent(student12);
         bTree.insertStudent(student13);
         bTree.insertStudent(student14);
-        System.out.println(bTree.getSize());    //debug line
+        System.out.println(bTree.size());    //debug line
 
         BTreePrinter printer = new BTreePrinter();
         printer.print(bTree.getRootNode());

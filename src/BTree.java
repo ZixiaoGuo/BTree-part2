@@ -1,6 +1,8 @@
+import java.util.AbstractCollection;
+import java.util.Iterator;
 import java.util.stream.IntStream;
 
-public class BTree {
+public class BTree extends AbstractCollection {
 
     private static final int ORDER = 3;
     private int size;
@@ -11,8 +13,19 @@ public class BTree {
         rootNode = new BTreeNode();
     }
 
-    public int getSize() {
+    @Override
+    public Iterator iterator() {
+        return null;
+    }
+
+    @Override
+    public int size() {
         return size;
+    }
+
+    public boolean add() {
+
+        return true;
     }
 
     public BTreeNode getRootNode() {
@@ -23,7 +36,7 @@ public class BTree {
      * Using adapter pattern to achieve compatibility for previous project's code
      * New root node may be generated during insertion, hence need find new root
      * @param student Student being inserted
-     * @return  insertion result
+     * @return whether insertion is successful
      */
     public Boolean insertStudent(Student student) {
         rootNode.insertStudent(student);
