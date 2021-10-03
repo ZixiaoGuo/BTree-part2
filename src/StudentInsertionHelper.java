@@ -5,8 +5,8 @@ import java.util.List;
 /**
  * This class is used to implement some helper functions to compare students
  */
-public final class StudentComparator {
-    private StudentComparator() {
+public final class StudentInsertionHelper {
+    private StudentInsertionHelper() {
 
     }
 
@@ -32,7 +32,8 @@ public final class StudentComparator {
         return count;
     }
 
-    public static Student[] addStudentElement(
+    //insert student element
+    public static Student[] insertStudentElement(
             Student[] arr, Student element,
             int position)
     {
@@ -61,8 +62,8 @@ public final class StudentComparator {
         return arr;
     }
 
-
-    public static BTree.BTreeNode[] addElement(
+    //insert btree child to one node
+    public static BTree.BTreeNode[] insertBtreeElement(
             BTree.BTreeNode[] arr, BTree.BTreeNode element,
             int position)
     {

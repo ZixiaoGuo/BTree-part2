@@ -1,12 +1,18 @@
-import java.util.AbstractCollection;
+import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.stream.IntStream;
 
-public class BTree extends AbstractCollection {
+public class BTree extends AbstractSet {
 
     private static final int ORDER = 3;
     private int size;
     private BTreeNode rootNode;
+
+    @Override
+    public String toString() {
+        //TODO: placeholder, needs to be changed
+        return super.toString();
+    }
 
     public BTree() {
         size = 0;
@@ -15,6 +21,17 @@ public class BTree extends AbstractCollection {
 
     @Override
     public Iterator iterator() {
+        Iterator<BTreeNode> it = new Iterator<>() {
+            @Override
+            public boolean hasNext() {
+                return false;
+            }
+
+            @Override
+            public BTreeNode next() {
+                return null;
+            }
+        };
         return null;
     }
 
@@ -23,14 +40,19 @@ public class BTree extends AbstractCollection {
         return size;
     }
 
-    public boolean add() {
+    public int getOrder() {
+        return ORDER;
+    }
 
+    public boolean increaseSize() {
+        size++;
         return true;
     }
 
     public BTreeNode getRootNode() {
         return rootNode;
     }
+
 
     /**
      * Using adapter pattern to achieve compatibility for previous project's code
@@ -55,12 +77,24 @@ public class BTree extends AbstractCollection {
             return students;
         }
 
+        public void setStudents(Student[] students){
+            this.students = students;
+        }
+
         public BTreeNode getParentNode() {
             return parentNode;
         }
 
         public BTreeNode[] getChildrenNode() {
             return childrenNode;
+        }
+
+        public void setParentNode(BTreeNode parentNode) {
+            this.parentNode = parentNode;
+        }
+
+        public void setChildrenNode(BTreeNode[] childrenNode) {
+            this.childrenNode = childrenNode;
         }
 
         /**
@@ -113,18 +147,18 @@ public class BTree extends AbstractCollection {
         private void insertNode(BTreeNode node, Student student, BTreeNode extraChildNode) {
             int valueIndex = 0;
             // TODO: error prone here
-            while(valueIndex < StudentComparator.getNotNullLength(node.students) && StudentComparator.compareStudentNames(node, valueIndex, student)  < 0) {
+            while(valueIndex < StudentInsertionHelper.getNotNullLength(node.students) && StudentInsertionHelper.compareStudentNames(node, valueIndex, student)  < 0) {
                 valueIndex++;
             }
 
-            node.students = StudentComparator.addStudentElement(node.students, student, valueIndex);
+            node.students = StudentInsertionHelper.insertStudentElement(node.students, student, valueIndex);
 
             //insert additional child node to fit the increase
             extraChildNode.parentNode = node;
-            node.childrenNode = StudentComparator.addElement(node.childrenNode, extraChildNode, valueIndex+1);
+            node.childrenNode = StudentInsertionHelper.insertBtreeElement(node.childrenNode, extraChildNode, valueIndex+1);
 
             // if size is greater or equal to order, need to generate new nodes
-            if(StudentComparator.getNotNullLength(node.students) > ORDER -1) {
+            if(StudentInsertionHelper.getNotNullLength(node.students) > ORDER -1) {
             /*
              since this is an order 3 b-tree, when the new node need to be generated,
              the middle student entry get promoted, which index equals to M/2 = 1
@@ -169,9 +203,9 @@ public class BTree extends AbstractCollection {
                 return this;
             }
             int valueIndex = 0;
-            while(valueIndex < StudentComparator.getNotNullLength(students) &&
-                    StudentComparator.compareStudentNames(this, valueIndex, target) <= 0) {
-                if(StudentComparator.compareStudentNames(this, valueIndex, target) == 0) {
+            while(valueIndex < StudentInsertionHelper.getNotNullLength(students) &&
+                    StudentInsertionHelper.compareStudentNames(this, valueIndex, target) <= 0) {
+                if(StudentInsertionHelper.compareStudentNames(this, valueIndex, target) == 0) {
                     return this;
                 }
                 valueIndex++;
@@ -197,7 +231,7 @@ public class BTree extends AbstractCollection {
          */
         //TODO: maybe change to private later
         public boolean isEmpty() {
-            if(students == null || StudentComparator.getNotNullLength(students) == 0) {
+            if(students == null || StudentInsertionHelper.getNotNullLength(students) == 0) {
                 return true;
             }
             return false;

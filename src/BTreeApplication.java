@@ -51,6 +51,7 @@ public class BTreeApplication {
         bTree.insertStudent(student13);
         bTree.insertStudent(student14);
         System.out.println(bTree.size());    //debug line
+        node = bTree.getRootNode();
 
         BTreePrinter printer = new BTreePrinter();
         printer.print(bTree.getRootNode());
