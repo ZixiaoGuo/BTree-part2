@@ -18,29 +18,32 @@ public class BTreeApplication {
     }
 
     public static void testCase1() throws ExecutionControl.NotImplementedException {
-        Student student1 = new Student("a", 822018452, 2.99f);
-        Student student2 = new Student("b", 822018431, 3.10f);
-        Student student3 = new Student("c", 822018455, 3.5f);
-        Student student4 = new Student("d", 822018412, 2.80f);
-        Student student5 = new Student("e", 822017897, 4.0f);
-        Student student6 = new Student("f", 822017999, 2.74f);
-        Student student7 = new Student("g", 822017832, 3.01f);
-        Student student8 = new Student("h", 822017845, 3.99f);
-        Student student9 = new Student("i", 822017878, 2.55f);
-        Student student10 = new Student("j", 822017921, 4.0f);
-        Student student11 = new Student("k", 822017785, 3.01f);
-        Student student12 = new Student("l", 822017622, 4.0f);
-        Student student13 = new Student("m", 822017545, 3.01f);
-        Student student14 = new Student("n", 822017653, 2.11f);
+        Student student1 = new Student("a", 14, 2.99f);
+        Student student2 = new Student("b", 13, 3.10f);
+        Student student3 = new Student("c", 12, 3.5f);
+        Student student4 = new Student("d", 11, 2.80f);
+        Student student5 = new Student("e", 10, 4.0f);
+        Student student6 = new Student("f", 9, 2.74f);
+        Student student7 = new Student("g", 8, 3.01f);
+        Student student8 = new Student("h", 7, 3.99f);
+        Student student9 = new Student("i", 6, 2.55f);
+        Student student10 = new Student("j", 5, 4.0f);
+        Student student11 = new Student("k", 4, 3.01f);
+        Student student12 = new Student("l", 3, 4.0f);
+        Student student13 = new Student("m", 2, 3.01f);
+        Student student14 = new Student("n", 1, 2.11f);
 
         BTree bTree = new BTree();
         BTree.BTreeNode node = bTree.getRootNode();
         bTree.insertStudent(student1);
         bTree.insertStudent(student2);
+        node = bTree.getRootNode();
         bTree.insertStudent(student3);
+        node = bTree.getRootNode();
         System.out.println(bTree.size());    //debug line
         bTree.insertStudent(student4);
-        bTree.insertStudent(student5);
+        node = bTree.getRootNode();
+        bTree.insertStudent(student5);  //TODO: out of bound bug for insertByRedID here
         bTree.insertStudent(student6);
         bTree.insertStudent(student7);
         bTree.insertStudent(student8);

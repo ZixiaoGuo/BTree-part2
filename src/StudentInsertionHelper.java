@@ -22,6 +22,10 @@ public final class StudentInsertionHelper {
         //return node.getStudents().get(indexOfStudentInNode).getName().compareTo(student.getName());
         return node.getStudents()[indexOfStudentInNode].getName().compareTo(student.getName());
     }
+    public static int compareStudentRedID (BTree.BTreeNode node, int indexOfStudentInNode, Student student) {
+        int result = node.getStudents()[indexOfStudentInNode].getRedId() - student.getRedId();
+        return result;
+    }
 
     //Function that returns the length of array without counting null elements
     public static <T> int getNotNullLength(T[] arr){

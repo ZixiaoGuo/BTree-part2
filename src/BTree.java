@@ -118,6 +118,7 @@ public class BTree extends AbstractSet {
             this.parentNode = parent;
         }
 
+        //TODO: delete these 2 methods after finished strategy
         /**
          * Insert student object to the b-tree, if node is empty, instantiate the children nodes
          * search from the root to determine which node to insert, then insert the node
