@@ -7,6 +7,7 @@ public class BTree extends AbstractSet {
     private static final int ORDER = 3;
     private int size;
     private BTreeNode rootNode;
+    private SortingStrategy strategy;
 
     @Override
     public String toString() {
@@ -17,6 +18,7 @@ public class BTree extends AbstractSet {
     public BTree() {
         size = 0;
         rootNode = new BTreeNode();
+        strategy = new SortByName();
     }
 
     @Override
@@ -44,9 +46,8 @@ public class BTree extends AbstractSet {
         return ORDER;
     }
 
-    public boolean increaseSize() {
+    public void increaseSize() {
         size++;
-        return true;
     }
 
     public BTreeNode getRootNode() {
@@ -61,8 +62,10 @@ public class BTree extends AbstractSet {
      * @return whether insertion is successful
      */
     public Boolean insertStudent(Student student) {
-        rootNode.insertStudent(student);
-        rootNode = rootNode.getRoot();  //new root node may be generated during insertion
+        //rootNode.insertStudent(student);
+        //rootNode = rootNode.getRoot();  //new root node may be generated during insertion
+        strategy.insertStudent(student, rootNode, this);
+        rootNode = rootNode.getRoot();
         return true;
     }
 
