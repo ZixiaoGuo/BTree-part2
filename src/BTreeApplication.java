@@ -1,6 +1,7 @@
 import jdk.jshell.spi.ExecutionControl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Author: Zixiao Guo
@@ -70,6 +71,16 @@ public class BTreeApplication {
         studentOnProbation.clear();
         Student specificStudent = search.findSpecificStudent(14, bTree);
         System.out.println(specificStudent.toString() + "+++++++++++++++++++++++++++++++");
+        for (var student : bTree) {
+            System.out.println(student + "////////////////////////////////");
+        }
+        bTree.forEach(System.out::println); //TODO: change the internal iterator to reverse order and clean up the code
+        System.out.println(bTree.toString());
+        Student[] students = bTree.toArray();
+        for (Student student: students) {
+            System.out.println(student + "00000000000");
+        }
+
         //int i = 4;
         //Student studentK = search.getSpecificStudents(i, node);
         //System.out.println("test----------------This is the " + i + " th element in the tree: " + studentK);

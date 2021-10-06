@@ -1,5 +1,9 @@
 import java.util.AbstractSet;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.IntFunction;
 import java.util.stream.IntStream;
 
 public class BTree extends AbstractSet {
@@ -11,8 +15,27 @@ public class BTree extends AbstractSet {
 
     @Override
     public String toString() {
-        //TODO: placeholder, needs to be changed
-        return super.toString();
+        ArrayList<Student> outputString = new ArrayList<>();
+        for (Object student: getBTree()) {
+            outputString.add((Student) student);
+
+        }
+        return outputString.toString();
+    }
+
+
+    @Override
+    public Student[] toArray() {
+        ArrayList<Student> outputString = new ArrayList<>();
+        for (Object student: getBTree()) {
+            outputString.add((Student) student);
+        }
+
+        Student[] students = new Student[outputString.size()];
+        for (int i = 0; i < students.length; i++) {
+            students[i] = outputString.get(i);
+        }
+        return students;
     }
 
     public BTree() {
@@ -21,20 +44,45 @@ public class BTree extends AbstractSet {
         strategy = new SortByName();
     }
 
+    private BTree getBTree() {
+        return this;
+    }
+
     @Override
     public Iterator iterator() {
-        Iterator<BTreeNode> it = new Iterator<>() {
+        Iterator<Student> it = new Iterator<>() {
+            private int currentIndex = 1;
+            StudentSearcher searcher = new StudentSearcher();
             @Override
             public boolean hasNext() {
-                return false;
+                return currentIndex < size + 1;
             }
 
             @Override
-            public BTreeNode next() {
-                return null;
+            public Student next() {
+                Student result = searcher.findSpecificStudent(currentIndex, getBTree());
+                currentIndex++;
+                return result;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
             }
         };
-        return null;
+        return it;
+    }
+
+    @Override
+    public void forEach(Consumer action) {
+        Objects.requireNonNull(action);
+        StudentSearcher searcher= new StudentSearcher();
+        int index = getBTree().size();
+        for (int i = index; i > 0; i--) {
+            Object student = searcher.findSpecificStudent(i,getBTree());
+            action.accept(student);
+        }
+
     }
 
     @Override
@@ -77,7 +125,7 @@ public class BTree extends AbstractSet {
         private BTreeNode[] childrenNode;
 
         public boolean isLeaf() {
-            return (this.getChildrenNode()[0].isEmpty() && !this.isRoot()); //TODO: probably not need isroot here
+            return (this.getChildrenNode()[0].isEmpty() && !this.isRoot());
         }
 
         public Student[] getStudents() {
@@ -123,28 +171,6 @@ public class BTree extends AbstractSet {
         }
 
         /**
-         * Recursively search the target entry inside the b-tree
-         * if found the target, return the current node, otherwise call the method on the children
-         * if the result is empty node, return the empty node
-         * @param target the target student object
-         * @return returns the search result
-         */
-        public BTreeNode search(Student target) {
-            if(isEmpty()) {
-                return this;
-            }
-            int valueIndex = 0;
-            while(valueIndex < StudentInsertionHelper.getNotNullLength(students) &&
-                    StudentInsertionHelper.compareStudentNames(this, valueIndex, target) <= 0) {
-                if(StudentInsertionHelper.compareStudentNames(this, valueIndex, target) == 0) {
-                    return this;
-                }
-                valueIndex++;
-            }
-            return childrenNode[valueIndex].search(target);
-        }
-
-        /**
          * Finds the root node
          * @return the root node
          */
@@ -160,7 +186,6 @@ public class BTree extends AbstractSet {
          * Checks if a node is empty
          * @return returns true if node is empty, false otherwise
          */
-        //TODO: maybe change to private later
         public boolean isEmpty() {
             if(students == null || StudentInsertionHelper.getNotNullLength(students) == 0) {
                 return true;
@@ -172,7 +197,7 @@ public class BTree extends AbstractSet {
          * Check if current node is root
          * @return
          */
-        private boolean isRoot() {
+        public boolean isRoot() {
             return parentNode == null;
         }
 
