@@ -3,7 +3,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * This class is used to implement some helper functions to compare students
+ * This class is used to implement some helper functions to insert students
  */
 public final class StudentInsertionHelper {
     private StudentInsertionHelper() {

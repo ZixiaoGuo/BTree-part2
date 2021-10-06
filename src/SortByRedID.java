@@ -8,12 +8,12 @@ public class SortByRedID implements SortingStrategy{
             //need to pass in the BTree instance to create a new node since node is an inner class
             node.getChildrenNode()[0] = bTree.new BTreeNode(node);
             node.getChildrenNode()[1] = bTree.new BTreeNode(node);
-            bTree.increaseSize();
+            bTree.incrementSize();
             return true;
         }
         BTree.BTreeNode position = search(bTree.getRootNode(), student);
         insertNode(position.getParentNode(), student, bTree.new BTreeNode(), bTree, bTree.getOrder());
-        bTree.increaseSize();
+        bTree.incrementSize();
         return true;
     }
 

@@ -8,12 +8,12 @@ public class SortByName implements SortingStrategy{
             //need to pass in the BTree instance to create a new node since node is an inner class
             node.getChildrenNode()[0] = bTree.new BTreeNode(node);
             node.getChildrenNode()[1] = bTree.new BTreeNode(node);
-            bTree.increaseSize();
+            bTree.incrementSize();
             return true;
         }
         BTree.BTreeNode position = search(bTree.getRootNode(), student);
         insertNode(position.getParentNode(), student, bTree.new BTreeNode(), bTree, bTree.getOrder());
-        bTree.increaseSize();
+        bTree.incrementSize();
         return true;
     }
 
@@ -42,8 +42,8 @@ public class SortByName implements SortingStrategy{
 
             // instantiate a new node and moves the entries and child nodes into it
             BTree.BTreeNode rightNode = bTree.new BTreeNode();
-            rightNode.setStudents(IntStream.range(promoteIndex+1, ORDER +1).mapToObj(i -> node.getStudents()[i]).toArray(Student[]::new)); //attach elements to new node
-            rightNode.setChildrenNode(IntStream.range(promoteIndex+1, ORDER +2).mapToObj(i -> node.getChildrenNode()[i]).toArray(BTree.BTreeNode[]::new));
+            rightNode.setStudents(IntStream.range(promoteIndex+1, ORDER).mapToObj(i -> node.getStudents()[i]).toArray(Student[]::new)); //attach elements to new node
+            rightNode.setChildrenNode(IntStream.range(promoteIndex+1, ORDER +1).mapToObj(i -> node.getChildrenNode()[i]).toArray(BTree.BTreeNode[]::new));
             for(BTree.BTreeNode rChild : rightNode.getChildrenNode()) {
                 if(rChild!=null) {
                     rChild.setParentNode(rightNode);

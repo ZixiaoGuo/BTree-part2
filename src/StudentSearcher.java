@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class StudentSearcher {
+
+    private int counter;    //Variable used in findSpecificStudent method to act as a global counter
+    private Student targetStudent;
+
     public ArrayList<Student> getHighGPAStudents(BTree.BTreeNode node, ArrayList<Student> students) {
         if (node!= null && !node.isEmpty()) {
             for (BTree.BTreeNode childNode : node.getChildrenNode()) {
@@ -76,6 +80,37 @@ public class StudentSearcher {
 
         }
         return students;
+    }
+
+    public Student findSpecificStudent(int index, BTree bTree) {
+        counter = index-1;
+        if (counter > bTree.size()-1) {
+            throw new IndexOutOfBoundsException();
+        }
+        targetStudent = new Student();
+        findSpecificStudent(bTree.getRootNode());
+        return targetStudent;
+    }
+
+    private void findSpecificStudent(BTree.BTreeNode node) {
+        int studentIndex, childrenIndex = 0;
+        //while (studentIndex < )
+        for (int i = 0; i < StudentInsertionHelper.getNotNullLength(node.getChildrenNode()); i++) {
+            if (!node.isLeaf()) {
+                findSpecificStudent(node.getChildrenNode()[i]);
+            }
+            if (i < StudentInsertionHelper.getNotNullLength(node.getStudents())) {
+                //check if it is the element
+                if (counter == 0) {
+                    targetStudent = node.getStudents()[i];
+                }
+                counter--;
+            }
+        }
+
+
+
+       // return null;
     }
 
 }

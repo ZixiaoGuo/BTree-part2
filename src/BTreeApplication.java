@@ -43,7 +43,7 @@ public class BTreeApplication {
         System.out.println(bTree.size());    //debug line
         bTree.insertStudent(student4);
         node = bTree.getRootNode();
-        bTree.insertStudent(student5);  //TODO: out of bound bug for insertByRedID here
+        bTree.insertStudent(student5);
         bTree.insertStudent(student6);
         bTree.insertStudent(student7);
         bTree.insertStudent(student8);
@@ -68,6 +68,8 @@ public class BTreeApplication {
         studentWithGoodGPA.clear();
         System.out.println("test-----------Students on probation: " + studentOnProbation);
         studentOnProbation.clear();
+        Student specificStudent = search.findSpecificStudent(14, bTree);
+        System.out.println(specificStudent.toString() + "+++++++++++++++++++++++++++++++");
         //int i = 4;
         //Student studentK = search.getSpecificStudents(i, node);
         //System.out.println("test----------------This is the " + i + " th element in the tree: " + studentK);
