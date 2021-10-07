@@ -1,11 +1,27 @@
+package com.zixiaoguo.cs635.assignment2.main;
+
 import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.function.IntFunction;
-import java.util.stream.IntStream;
 
+/**
+ * Author: Zixiao Guo
+ * RedId: 822029189
+ * CS635 Assignment 2
+ * Section 2
+ * 10/5/2021
+ *
+ * This is the btree class with inner class for node
+ */
+
+/**
+ * Since the node class is an inner class if com.zixiaoguo.cs635.assignment1.main.BTree, if I implement a generic interface,
+ * my split node function will generate error that beyond my ability to fix, hence I
+ * have to extend a non-generic collection class to solve this problem
+ *
+ */
 public class BTree extends AbstractSet {
 
     private static final int ORDER = 3;
@@ -13,6 +29,10 @@ public class BTree extends AbstractSet {
     private BTreeNode rootNode;
     private SortingStrategy strategy;
 
+    /**
+     * Use external iterator to acquire all the elements and convert them to string
+     * @return String representation of this com.zixiaoguo.cs635.assignment1.main.BTree
+     */
     @Override
     public String toString() {
         ArrayList<Student> outputString = new ArrayList<>();
@@ -24,6 +44,10 @@ public class BTree extends AbstractSet {
     }
 
 
+    /**
+     * Use external iterator to acquire all the objects, cast them to student then return
+     * @return An array contains all the element of the com.zixiaoguo.cs635.assignment1.main.BTree
+     */
     @Override
     public Student[] toArray() {
         ArrayList<Student> outputString = new ArrayList<>();
@@ -38,16 +62,28 @@ public class BTree extends AbstractSet {
         return students;
     }
 
-    public BTree() {
+    /**
+     * Constructor of com.zixiaoguo.cs635.assignment1.main.BTree class that accepts different strategies to arrange elements
+     * @param sortingStrategy there are com.zixiaoguo.cs635.assignment1.main.SortByName and com.zixiaoguo.cs635.assignment1.main.SortByRedID strategies you can choose from
+     */
+    public BTree(SortingStrategy sortingStrategy) {
         size = 0;
         rootNode = new BTreeNode();
-        strategy = new SortByName();
+        strategy = sortingStrategy;
     }
 
+    /**
+     * This is used for methods from inner node class to get the reference of the tree
+     * @return
+     */
     private BTree getBTree() {
         return this;
     }
 
+    /**
+     * Constructs iterator to iterate through the tree
+     * @return
+     */
     @Override
     public Iterator iterator() {
         Iterator<Student> it = new Iterator<>() {
@@ -60,7 +96,7 @@ public class BTree extends AbstractSet {
 
             @Override
             public Student next() {
-                Student result = searcher.findSpecificStudent(currentIndex, getBTree());
+                Student result = searcher.getSpecificStudent(currentIndex, getBTree());
                 currentIndex++;
                 return result;
             }
@@ -73,13 +109,17 @@ public class BTree extends AbstractSet {
         return it;
     }
 
+    /**
+     * Internal iterator of com.zixiaoguo.cs635.assignment1.main.BTree class
+     * @param action
+     */
     @Override
     public void forEach(Consumer action) {
         Objects.requireNonNull(action);
         StudentSearcher searcher= new StudentSearcher();
         int index = getBTree().size();
         for (int i = index; i > 0; i--) {
-            Object student = searcher.findSpecificStudent(i,getBTree());
+            Object student = searcher.getSpecificStudent(i,getBTree());
             action.accept(student);
         }
 
@@ -94,32 +134,30 @@ public class BTree extends AbstractSet {
         return ORDER;
     }
 
-    public void incrementSize() {
+    protected void incrementSize() {
         size++;
     }
 
+    //need to pass root to methods in testing class, hence need to make it public
     public BTreeNode getRootNode() {
         return rootNode;
     }
 
-
     /**
-     * Using adapter pattern to achieve compatibility for previous project's code
-     * New root node may be generated during insertion, hence need find new root
-     * @param student Student being inserted
-     * @return whether insertion is successful
+     * Achieve compatibility for previous project's code by calling functions in node class
+     *
+     * @param student com.zixiaoguo.cs635.assignment1.main.Student being inserted
+     * @return
      */
-    public boolean insertStudent(Student student) {
-        //rootNode.insertStudent(student);
-        //rootNode = rootNode.getRoot();  //new root node may be generated during insertion
-        strategy.insertStudent(student, rootNode, this);
-        rootNode = rootNode.getRoot();
-        return true;
+    @Override
+    public boolean add(Object student) {
+        boolean result = strategy.insertStudent((Student) student, rootNode, this);
+        rootNode = rootNode.getRoot();  // new root node may be generated during insertion
+        return result;
     }
 
     public class BTreeNode {
 
-        //private static final int ORDER = 3;
         private Student[] students;       // entry of students in one node
         private BTreeNode parentNode;
         private BTreeNode[] childrenNode;
@@ -132,7 +170,7 @@ public class BTree extends AbstractSet {
             return students;
         }
 
-        public void setStudents(Student[] students){
+        protected void setStudents(Student[] students){
             this.students = students;
         }
 
@@ -144,18 +182,18 @@ public class BTree extends AbstractSet {
             return childrenNode;
         }
 
-        public void setParentNode(BTreeNode parentNode) {
+        protected void setParentNode(BTreeNode parentNode) {
             this.parentNode = parentNode;
         }
 
-        public void setChildrenNode(BTreeNode[] childrenNode) {
+        protected void setChildrenNode(BTreeNode[] childrenNode) {
             this.childrenNode = childrenNode;
         }
 
         /**
          * Creates new node of b-tree and instantiate its student entries and child nodes
          */
-        public BTreeNode() {
+        protected BTreeNode() {
             this.students = new Student[3];
             this.childrenNode = new BTreeNode[4];
         }

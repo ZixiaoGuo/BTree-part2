@@ -1,16 +1,17 @@
+package com.zixiaoguo.cs635.assignment2.main;
+
 import jdk.jshell.spi.ExecutionControl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Author: Zixiao Guo
  * RedId: 822029189
- * CS635 Assignment 1
+ * CS635 Assignment 2
  * Section 2
- * 9/7/2021
+ * 10/5/2021
  *
- * This is the driver class to test the program
+ * This is the driver class to com.zixiaoguo.cs635.assignment1.main.test the program
  */
 public class BTreeApplication {
 
@@ -34,59 +35,49 @@ public class BTreeApplication {
         Student student13 = new Student("m", 2, 3.01f);
         Student student14 = new Student("n", 1, 2.11f);
 
-        BTree bTree = new BTree();
+        BTree bTree = new BTree(new SortByName());  //you can change SortByName to SortByRedID for different sorting strategy
+        bTree.add(student1);
+        bTree.add(student2);
+        bTree.add(student3);
+        bTree.add(student4);
+        bTree.add(student5);
+        bTree.add(student6);
+        bTree.add(student7);
+        bTree.add(student8);
+        bTree.add(student9);
+        bTree.add(student10);
+        bTree.add(student11);
+        bTree.add(student12);
+        bTree.add(student13);
+        bTree.add(student14);
         BTree.BTreeNode node = bTree.getRootNode();
-        bTree.insertStudent(student1);
-        bTree.insertStudent(student2);
-        node = bTree.getRootNode();
-        bTree.insertStudent(student3);
-        node = bTree.getRootNode();
-        System.out.println(bTree.size());    //debug line
-        bTree.insertStudent(student4);
-        node = bTree.getRootNode();
-        bTree.insertStudent(student5);
-        bTree.insertStudent(student6);
-        bTree.insertStudent(student7);
-        bTree.insertStudent(student8);
-        bTree.insertStudent(student9);
-        bTree.insertStudent(student10);
-        bTree.insertStudent(student11);
-        bTree.insertStudent(student12);
-        bTree.insertStudent(student13);
-        bTree.insertStudent(student14);
-        System.out.println(bTree.size());    //debug line
-        node = bTree.getRootNode();
 
         BTreePrinter printer = new BTreePrinter();
         printer.print(bTree.getRootNode());
+        System.out.println();
 
         ArrayList<Student> studentOnProbation = new ArrayList<Student>();
         ArrayList<Student> studentWithGoodGPA = new ArrayList<Student>();
         StudentSearcher search = new StudentSearcher();
         studentOnProbation = search.getProbationStudents(node, studentOnProbation);
         studentWithGoodGPA = search.getHighGPAStudents(node, studentWithGoodGPA);
-        System.out.println("test------------Students with 4.0 GPA: " + studentWithGoodGPA);
+        System.out.println("Students with 4.0 GPA: " + studentWithGoodGPA);
         studentWithGoodGPA.clear();
-        System.out.println("test-----------Students on probation: " + studentOnProbation);
+        System.out.println("Students on probation: " + studentOnProbation);
         studentOnProbation.clear();
-        Student specificStudent = search.findSpecificStudent(14, bTree);
-        System.out.println(specificStudent.toString() + "+++++++++++++++++++++++++++++++");
-        for (var student : bTree) {
-            System.out.println(student + "////////////////////////////////");
-        }
-        bTree.forEach(System.out::println); //TODO: change the internal iterator to reverse order and clean up the code
+        int index = 14;
+        Student specificStudent = search.getSpecificStudent(index, bTree);
+        System.out.println(index + " th student inside tree " + specificStudent.toString());
+        System.out.println();
+        System.out.println("Testing reversed internal iterator below: ----------------------");
+        bTree.forEach(System.out::println);
+        System.out.println();
+        System.out.println("Testing external iterator below: ----------------------");
         System.out.println(bTree.toString());
         Student[] students = bTree.toArray();
         for (Student student: students) {
-            System.out.println(student + "00000000000");
+            System.out.println(student);
         }
-
-        //int i = 4;
-        //Student studentK = search.getSpecificStudents(i, node);
-        //System.out.println("test----------------This is the " + i + " th element in the tree: " + studentK);
-
-
-
 
     }
 }

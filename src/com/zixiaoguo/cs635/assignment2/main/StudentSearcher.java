@@ -1,14 +1,29 @@
-import jdk.jshell.spi.ExecutionControl;
+package com.zixiaoguo.cs635.assignment2.main;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+/**
+ * Author: Zixiao Guo
+ * RedId: 822029189
+ * CS635 Assignment 2
+ * Section 2
+ * 10/5/2021
+ *
+ * This is the class to help searching students
+ */
 
 public class StudentSearcher {
 
     private int counter;    //Variable used in findSpecificStudent method to act as a global counter
     private Student targetStudent;
 
+    /**
+     * Search for student with 4.0 GPA
+     * @param node root node of com.zixiaoguo.cs635.assignment1.main.BTree
+     * @param students Array to store students found
+     * @return Arraylist of students with 4.0 GPA
+     */
     public ArrayList<Student> getHighGPAStudents(BTree.BTreeNode node, ArrayList<Student> students) {
         if (node!= null && !node.isEmpty()) {
             for (BTree.BTreeNode childNode : node.getChildrenNode()) {
@@ -27,6 +42,13 @@ public class StudentSearcher {
         Collections.reverse(students);
         return students;
     }
+
+    /**
+     * Search for student under probation
+     * @param node root node of com.zixiaoguo.cs635.assignment1.main.BTree
+     * @param studentsOnProbation Array to store students found
+     * @return Arraylist of students below 2.85 GPA
+     */
     public ArrayList<Student> getProbationStudents(BTree.BTreeNode node, ArrayList<Student> studentsOnProbation) {
         if (node!= null && !node.isEmpty()) {
             for (BTree.BTreeNode childNode : node.getChildrenNode()) {
@@ -44,60 +66,32 @@ public class StudentSearcher {
         return studentsOnProbation;
     }
 
+
     /**
      * Find the specific element, throw exception if index out of bound
      * @param index index of student
-     * @param node  node passed in
+     * @param bTree  reference of bTree
      * @return  student found
-     * @throws ExecutionControl.NotImplementedException
+     *
      */
-    //TODO: nullptr exception here, change later
-    public Student getSpecificStudents(int index, BTree.BTreeNode node) throws ExecutionControl.NotImplementedException {
-        ArrayList<Student> students = new ArrayList<Student>();
-        getAllStudents(node, students);
-        if (index > students.size()) {
+    public Student getSpecificStudent(int index, BTree bTree) {
+        if (index > bTree.size()) {
             throw new IndexOutOfBoundsException();
         }
-        else {
-            Collections.sort(students, Comparator.comparing(Student::getName));
-            return students.get(index-1);
-        }
-    }
-    /**
-     * Collect all elements inside the tree in an arraylist
-     * @param node  root node passed in
-     * @param students  array of students to collect results
-     * @return
-     */
-    private ArrayList<Student> getAllStudents(BTree.BTreeNode node, ArrayList<Student> students) {
-        if (node!= null && !node.isEmpty()) {
-            for (BTree.BTreeNode childNode : node.getChildrenNode()) {
-                getAllStudents(childNode, students);
-            }
-            for (Student student : node.getStudents()) {
-                students.add(student);
-            }
-
-        }
-        return students;
-    }
-
-    public Student findSpecificStudent(int index, BTree bTree) {
         counter = index-1;
         if (counter > bTree.size()-1) {
             throw new IndexOutOfBoundsException();
         }
         targetStudent = new Student();
-        findSpecificStudent(bTree.getRootNode());
+        getSpecificStudent(bTree.getRootNode());
         return targetStudent;
     }
 
-    private void findSpecificStudent(BTree.BTreeNode node) {
-        int studentIndex, childrenIndex = 0;
-        //while (studentIndex < )
+    private void getSpecificStudent(BTree.BTreeNode node) {
+
         for (int i = 0; i < StudentInsertionHelper.getNotNullLength(node.getChildrenNode()); i++) {
             if (!node.isLeaf()) {
-                findSpecificStudent(node.getChildrenNode()[i]);
+                getSpecificStudent(node.getChildrenNode()[i]);
             }
             if (i < StudentInsertionHelper.getNotNullLength(node.getStudents())) {
                 //check if it is the element
@@ -107,10 +101,7 @@ public class StudentSearcher {
                 counter--;
             }
         }
-
-
-
-       // return null;
     }
+
 
 }

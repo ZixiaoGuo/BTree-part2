@@ -1,4 +1,12 @@
+package com.zixiaoguo.cs635.assignment2.main;
+
 /**
+ * Author: Zixiao Guo
+ * RedId: 822029189
+ * CS635 Assignment 2
+ * Section 2
+ * 10/5/2021
+ *
  * this is the class for student object with constructors, getters and setters
  */
 public class Student {
@@ -42,7 +50,7 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Student{" +
+        return "com.zixiaoguo.cs635.assignment1.main.Student{" +
                 "name='" + name + '\'' +
                 ", redId=" + redId +
                 ", gpa=" + gpa +
